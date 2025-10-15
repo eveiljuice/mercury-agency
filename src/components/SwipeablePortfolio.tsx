@@ -1,5 +1,5 @@
 import { Box, VStack, Heading, Text, HStack, Tag } from '@chakra-ui/react'
-import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
 const MotionBox = motion(Box)
@@ -17,7 +17,6 @@ interface SwipeablePortfolioProps {
 export const SwipeablePortfolio = ({ projects }: SwipeablePortfolioProps) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState(0)
-  const x = useMotionValue(0)
 
   const paginate = (newDirection: number) => {
     const nextIndex = currentIndex + newDirection
@@ -59,7 +58,7 @@ export const SwipeablePortfolio = ({ projects }: SwipeablePortfolioProps) => {
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={1}
-          onDragEnd={(e, { offset, velocity }) => {
+          onDragEnd={(_e, { offset, velocity }) => {
             const swipe = Math.abs(offset.x) * velocity.x
             if (swipe > 10000) {
               paginate(-1)

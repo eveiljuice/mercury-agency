@@ -14,7 +14,7 @@ export const AnimatedCard = ({ children, delay = 0, ...props }: AnimatedCardProp
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.6, delay }}
+      transition={{ duration: 0.6, delay } as any}
       whileHover={{ 
         scale: 1.05,
         boxShadow: '0 0 40px rgba(205, 127, 50, 0.3)',

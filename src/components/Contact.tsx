@@ -11,7 +11,6 @@ import {
   FormControl,
   FormLabel,
   Link,
-  Icon,
 } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { GradientText } from './GradientText'

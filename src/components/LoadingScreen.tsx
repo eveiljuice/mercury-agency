@@ -80,7 +80,7 @@ export const LoadingScreen = ({ isLoading }: LoadingScreenProps) => {
                       repeat: Infinity,
                       delay: index * 0.2,
                       ease: 'easeInOut',
-                    }}
+                    } as any}
                   />
                 ))}
               </Box>

@@ -1,4 +1,4 @@
-import { Box, Container, Heading, SimpleGrid, Text, Icon, VStack } from '@chakra-ui/react'
+import { Box, Container, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { AnimatedCard } from './AnimatedCard'
 import { GradientText } from './GradientText'
