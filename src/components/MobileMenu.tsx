@@ -2,7 +2,7 @@ import { Box, VStack, Text, IconButton } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { GradientText } from './GradientText'
 
-const MotionBox = motion(Box)
+const MotionBox = motion(Box) as any
 
 interface MobileMenuProps {
   isOpen: boolean

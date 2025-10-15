@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { AnimatedCard } from './AnimatedCard'
 import { GradientText } from './GradientText'
 
-const MotionHeading = motion(Heading)
+const MotionHeading = motion(Heading) as any
 
 const services = [
   {

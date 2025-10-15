@@ -1,8 +1,8 @@
 import { Box, Image, VStack } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const MotionBox = motion(Box)
-const MotionImage = motion(Image)
+const MotionBox = motion(Box) as any
+const MotionImage = motion(Image) as any
 
 interface LoadingScreenProps {
   isLoading: boolean

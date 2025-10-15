@@ -4,7 +4,7 @@ import { AnimatedCard } from './AnimatedCard'
 import { GradientText } from './GradientText'
 import { SwipeablePortfolio } from './SwipeablePortfolio'
 
-const MotionHeading = motion(Heading)
+const MotionHeading = motion(Heading) as any
 
 const projects = [
   {

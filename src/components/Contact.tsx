@@ -16,7 +16,7 @@ import { motion } from 'framer-motion'
 import { GradientText } from './GradientText'
 import { useState } from 'react'
 
-const MotionHeading = motion(Heading)
+const MotionHeading = motion(Heading) as any
 
 export const Contact = () => {
   const [formData, setFormData] = useState({

@@ -5,7 +5,7 @@ import { useScrollDirection } from '../hooks/useScrollDirection'
 import { useIsMobile } from '../hooks/useIsMobile'
 import { MobileMenu } from './MobileMenu'
 
-const MotionBox = motion(Box)
+const MotionBox = motion(Box) as any
 
 const menuItems = [
   { label: 'Services', href: '#services' },

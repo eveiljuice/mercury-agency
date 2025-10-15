@@ -2,8 +2,8 @@ import { Box, Container, Heading, SimpleGrid, Text, VStack, Stat, StatLabel, Sta
 import { motion } from 'framer-motion'
 import { GradientText } from './GradientText'
 
-const MotionHeading = motion(Heading)
-const MotionBox = motion(Box)
+const MotionHeading = motion(Heading) as any
+const MotionBox = motion(Box) as any
 
 const stats = [
   { number: '50+', label: 'Projects Delivered' },

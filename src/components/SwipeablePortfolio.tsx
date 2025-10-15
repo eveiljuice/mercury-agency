@@ -2,7 +2,7 @@ import { Box, VStack, Heading, Text, HStack, Tag } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 
-const MotionBox = motion(Box)
+const MotionBox = motion(Box) as any
 
 interface Project {
   title: string

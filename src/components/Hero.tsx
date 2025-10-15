@@ -2,9 +2,9 @@ import { Box, Container, Heading, Text, Button, Stack, Flex } from '@chakra-ui/r
 import { motion } from 'framer-motion'
 import { GradientText } from './GradientText'
 
-const MotionBox = motion(Box)
-const MotionHeading = motion(Heading)
-const MotionText = motion(Text)
+const MotionBox = motion(Box) as any
+const MotionHeading = motion(Heading) as any
+const MotionText = motion(Text) as any
 
 export const Hero = () => {
   return (

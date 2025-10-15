@@ -1,7 +1,7 @@
 import { Box, BoxProps } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
-const MotionBox = motion(Box)
+const MotionBox = motion(Box) as any
 
 interface AnimatedCardProps extends BoxProps {
   children: React.ReactNode
