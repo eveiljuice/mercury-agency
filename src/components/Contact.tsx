@@ -1,4 +1,4 @@
-import { 
+﻿import { 
   Box, 
   Container, 
   Heading, 
@@ -262,7 +262,6 @@ export const Contact = () => {
     </Box>
   )
 }
-
 
 
 

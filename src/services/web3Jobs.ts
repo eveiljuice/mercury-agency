@@ -51,7 +51,15 @@ export const fetchWeb3Jobs = async (
     const data: Web3JobsResponse = await response.json()
     
     // API возвращает массив вакансий под индексом '2'
-    return data['2'] || []
+    const jobs = data['2']
+    
+    // Проверяем что это массив
+    if (!Array.isArray(jobs)) {
+      console.warn('API returned non-array data:', jobs)
+      return []
+    }
+    
+    return jobs
   } catch (error) {
     console.error('Error fetching Web3 jobs:', error)
     return []

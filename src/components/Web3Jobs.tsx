@@ -38,18 +38,27 @@ export const Web3Jobs = () => {
 
   useEffect(() => {
     if (selectedFilter === 'remote') {
-      setFilteredJobs(jobs.filter(job => job.location.toLowerCase().includes('remote')))
+      setFilteredJobs(Array.isArray(jobs) ? jobs.filter(job => job.location.toLowerCase().includes('remote')) : [])
     } else {
-      setFilteredJobs(jobs)
+      setFilteredJobs(Array.isArray(jobs) ? jobs : [])
     }
   }, [selectedFilter, jobs])
 
   const loadJobs = async () => {
     setIsLoading(true)
-    const data = await fetchWeb3Jobs({ limit: 50, show_description: false })
-    setJobs(data)
-    setFilteredJobs(data)
-    setIsLoading(false)
+    try {
+      const data = await fetchWeb3Jobs({ limit: 50, show_description: false })
+      // Убеждаемся что получили массив
+      const jobsArray = Array.isArray(data) ? data : []
+      setJobs(jobsArray)
+      setFilteredJobs(jobsArray)
+    } catch (error) {
+      console.error('Failed to load jobs:', error)
+      setJobs([])
+      setFilteredJobs([])
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const formatDate = (dateEpoch: number) => {
@@ -132,7 +141,7 @@ export const Web3Jobs = () => {
                 borderRadius="full"
                 px={8}
               >
-                {t('jobs.all')} ({jobs.length})
+                {t('jobs.all')} ({Array.isArray(jobs) ? jobs.length : 0})
               </Tab>
               <Tab 
                 _selected={{ 
@@ -143,7 +152,7 @@ export const Web3Jobs = () => {
                 borderRadius="full"
                 px={8}
               >
-                {t('jobs.remote')} ({jobs.filter(j => j.location.toLowerCase().includes('remote')).length})
+                {t('jobs.remote')} ({Array.isArray(jobs) ? jobs.filter(j => j.location && j.location.toLowerCase().includes('remote')).length : 0})
               </Tab>
             </TabList>
           </Tabs>
@@ -156,114 +165,124 @@ export const Web3Jobs = () => {
             </VStack>
           ) : (
             <AnimatePresence mode="wait">
-              <Grid
-                templateColumns={`repeat(${columns}, 1fr)`}
-                gap={6}
-              >
-                {filteredJobs.map((job, index) => (
-                  <MotionBox
-                    key={job.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                  >
-                    <Box
-                      bg="background.secondary"
-                      border="1px solid"
-                      borderColor="brand.900"
-                      borderRadius="xl"
-                      p={6}
-                      h="100%"
-                      _hover={{
-                        borderColor: 'brand.500',
-                        transform: 'translateY(-4px)',
-                        boxShadow: '0 20px 40px rgba(205, 127, 50, 0.15)',
-                      }}
-                      transition="all 0.3s ease"
-                      display="flex"
-                      flexDirection="column"
+              {Array.isArray(filteredJobs) && filteredJobs.length > 0 ? (
+                <Grid
+                  templateColumns={`repeat(${columns}, 1fr)`}
+                  gap={6}
+                >
+                  {filteredJobs.map((job, index) => (
+                    <MotionBox
+                      key={job.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
                     >
-                      <VStack align="stretch" spacing={4} flex={1}>
-                        {/* Company & Date */}
-                        <HStack justify="space-between" align="start">
-                          <Text 
-                            fontSize="sm" 
-                            fontWeight="bold" 
-                            color="brand.500"
-                          >
-                            {job.company}
-                          </Text>
-                          <Text fontSize="xs" color="text.secondary">
-                            {formatDate(job.date_epoch)}
-                          </Text>
-                        </HStack>
-
-                        {/* Title */}
-                        <Heading 
-                          fontSize="lg" 
-                          color="text.primary"
-                          noOfLines={2}
-                        >
-                          {job.title}
-                        </Heading>
-
-                        {/* Location */}
-                        <Text fontSize="sm" color="text.secondary">
-                          📍 {job.location}
-                        </Text>
-
-                        {/* Tags */}
-                        <HStack wrap="wrap" spacing={2} flex={1}>
-                          {job.tags.slice(0, 3).map((tag) => (
-                            <Badge
-                              key={tag}
-                              bg="brand.900"
+                      <Box
+                        bg="background.secondary"
+                        border="1px solid"
+                        borderColor="brand.900"
+                        borderRadius="xl"
+                        p={6}
+                        h="100%"
+                        _hover={{
+                          borderColor: 'brand.500',
+                          transform: 'translateY(-4px)',
+                          boxShadow: '0 20px 40px rgba(205, 127, 50, 0.15)',
+                        }}
+                        transition="all 0.3s ease"
+                        display="flex"
+                        flexDirection="column"
+                      >
+                        <VStack align="stretch" spacing={4} flex={1}>
+                          {/* Company & Date */}
+                          <HStack justify="space-between" align="start">
+                            <Text 
+                              fontSize="sm" 
+                              fontWeight="bold" 
                               color="brand.500"
-                              px={2}
-                              py={1}
-                              borderRadius="md"
-                              fontSize="xs"
                             >
-                              {tag}
-                            </Badge>
-                          ))}
-                          {job.tags.length > 3 && (
-                            <Badge
-                              bg="brand.900"
-                              color="text.secondary"
-                              px={2}
-                              py={1}
-                              borderRadius="md"
-                              fontSize="xs"
-                            >
-                              +{job.tags.length - 3}
-                            </Badge>
-                          )}
-                        </HStack>
+                              {job.company || 'Unknown'}
+                            </Text>
+                            <Text fontSize="xs" color="text.secondary">
+                              {job.date_epoch ? formatDate(job.date_epoch) : ''}
+                            </Text>
+                          </HStack>
 
-                        {/* Apply Button - ВАЖНО: rel="follow" без utm параметров */}
-                        <Link
-                          href={job.apply_url}
-                          isExternal
-                          rel="follow"
-                          _hover={{ textDecoration: 'none' }}
-                          w="100%"
-                        >
-                          <Button
-                            variant="bronze"
-                            w="100%"
-                            borderRadius="full"
-                            size="sm"
+                          {/* Title */}
+                          <Heading 
+                            fontSize="lg" 
+                            color="text.primary"
+                            noOfLines={2}
                           >
-                            {t('jobs.apply')} →
-                          </Button>
-                        </Link>
-                      </VStack>
-                    </Box>
-                  </MotionBox>
-                ))}
-              </Grid>
+                            {job.title || 'No title'}
+                          </Heading>
+
+                          {/* Location */}
+                          <Text fontSize="sm" color="text.secondary">
+                            📍 {job.location || 'Location not specified'}
+                          </Text>
+
+                          {/* Tags */}
+                          {job.tags && Array.isArray(job.tags) && job.tags.length > 0 && (
+                            <HStack wrap="wrap" spacing={2} flex={1}>
+                              {job.tags.slice(0, 3).map((tag) => (
+                                <Badge
+                                  key={tag}
+                                  bg="brand.900"
+                                  color="brand.500"
+                                  px={2}
+                                  py={1}
+                                  borderRadius="md"
+                                  fontSize="xs"
+                                >
+                                  {tag}
+                                </Badge>
+                              ))}
+                              {job.tags.length > 3 && (
+                                <Badge
+                                  bg="brand.900"
+                                  color="text.secondary"
+                                  px={2}
+                                  py={1}
+                                  borderRadius="md"
+                                  fontSize="xs"
+                                >
+                                  +{job.tags.length - 3}
+                                </Badge>
+                              )}
+                            </HStack>
+                          )}
+
+                          {/* Apply Button - ВАЖНО: rel="follow" без utm параметров */}
+                          {job.apply_url && (
+                            <Link
+                              href={job.apply_url}
+                              isExternal
+                              rel="follow"
+                              _hover={{ textDecoration: 'none' }}
+                              w="100%"
+                            >
+                              <Button
+                                variant="bronze"
+                                w="100%"
+                                borderRadius="full"
+                                size="sm"
+                              >
+                                {t('jobs.apply')} →
+                              </Button>
+                            </Link>
+                          )}
+                        </VStack>
+                      </Box>
+                    </MotionBox>
+                  ))}
+                </Grid>
+              ) : (
+                <VStack py={20}>
+                  <Text color="text.secondary">{t('jobs.loading')}</Text>
+                </VStack>
+              )}
             </AnimatePresence>
           )}
 
