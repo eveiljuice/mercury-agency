@@ -262,4 +262,3 @@ export const Contact = () => {
     </Box>
   )
 }
-

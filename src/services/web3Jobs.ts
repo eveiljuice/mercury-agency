@@ -19,7 +19,7 @@ interface Web3JobsResponse {
 
 // API URL теперь указывает на наш бэкенд прокси
 const API_BASE_URL = import.meta.env.PROD 
-  ? 'https://your-domain.com/api/web3-jobs' // Замените на ваш домен в продакшене
+  ? 'https://mercury-agency-backend.herokuapp.com/api/web3-jobs' // Замените на URL вашего бэкенд сервера
   : 'http://localhost:3001/api/web3-jobs'
 
 export const fetchWeb3Jobs = async (
