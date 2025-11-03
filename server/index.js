@@ -28,6 +28,10 @@ app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
+
+// Явная обработка OPTIONS запросов для CORS preflight
+app.options('*', cors())
+
 app.use(express.json())
 
 // Telegram Bot API endpoint
@@ -38,6 +42,9 @@ const WEB3_CAREER_API_TOKEN = process.env.WEB3_CAREER_API_TOKEN
 // Web3.career API proxy endpoint
 app.get('/api/web3-jobs', async (req, res) => {
   try {
+    // Логируем origin для отладки
+    console.log('Request origin:', req.headers.origin)
+    
     const { remote, limit, country, tag, show_description } = req.query
     
     if (!WEB3_CAREER_API_TOKEN) {
