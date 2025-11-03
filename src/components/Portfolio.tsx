@@ -1,52 +1,48 @@
 import { Box, Container, Heading, SimpleGrid, Text, VStack, HStack, Tag, Link, useBreakpointValue } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { AnimatedCard } from './AnimatedCard'
 import { GradientText } from './GradientText'
 import { SwipeablePortfolio } from './SwipeablePortfolio'
 
 const MotionHeading = motion(Heading) as any
 
-const projects = [
-  {
-    title: 'TrendXL 2.0',
-    description: 'AI-powered TikTok trend analysis platform. Analyzes profiles using Ensemble API and GPT-4o to identify trending content and hashtags.',
-    tech: ['React', 'TypeScript', 'Node.js', 'OpenAI', 'Chakra UI'],
-    link: '#',
-  },
-  {
-    title: 'E-Commerce Platform',
-    description: 'Full-featured online store with AI-powered product recommendations, inventory management, and real-time analytics.',
-    tech: ['Next.js', 'PostgreSQL', 'Stripe', 'TensorFlow'],
-    link: '#',
-  },
-  {
-    title: 'Healthcare Dashboard',
-    description: 'HIPAA-compliant patient management system with AI diagnostics assistance and appointment scheduling.',
-    tech: ['React', 'Python', 'FastAPI', 'ML', 'AWS'],
-    link: '#',
-  },
-  {
-    title: 'Smart Analytics Tool',
-    description: 'Business intelligence platform with automated reporting, predictive analytics, and custom visualizations.',
-    tech: ['Vue.js', 'D3.js', 'Node.js', 'MongoDB'],
-    link: '#',
-  },
-  {
-    title: 'Real-time Chat App',
-    description: 'Scalable messaging platform with AI moderation, end-to-end encryption, and multimedia support.',
-    tech: ['React Native', 'WebSocket', 'Redis', 'Firebase'],
-    link: '#',
-  },
-  {
-    title: 'Financial SaaS',
-    description: 'Automated invoicing and expense tracking system with AI-powered categorization and fraud detection.',
-    tech: ['Angular', 'NestJS', 'PostgreSQL', 'Plaid'],
-    link: '#',
-  },
-]
-
 export const Portfolio = () => {
+  const { t } = useTranslation()
   const isMobile = useBreakpointValue({ base: true, md: false })
+
+  const projects = [
+    {
+      title: 'TrendXL 2.0',
+      description: t('portfolio.projects.trendxl.description'),
+      tech: ['React', 'TypeScript', 'Node.js', 'OpenAI', 'Chakra UI'],
+      link: '#',
+    },
+    {
+      title: 'Donein5',
+      description: t('portfolio.projects.donein5.description'),
+      tech: ['React', 'TypeScript', 'Node.js', 'AI Agents', 'API'],
+      link: '#',
+    },
+    {
+      title: 'MathGPT',
+      description: t('portfolio.projects.mathgpt.description'),
+      tech: ['Python', 'OpenAI', 'Google Sheets API', 'MathJax'],
+      link: '#',
+    },
+    {
+      title: 'EdTech Parser',
+      description: t('portfolio.projects.edtech.description'),
+      tech: ['Node.js', 'Python', 'Supabase', 'PostgreSQL', 'Web Scraping'],
+      link: '#',
+    },
+    {
+      title: 'AI-Producer',
+      description: t('portfolio.projects.aiproducer.description'),
+      tech: ['Python', 'OpenAI', 'D-ID', 'FFmpeg', 'React'],
+      link: '#',
+    },
+  ]
 
   return (
     <Box id="portfolio" py={{ base: 12, md: 20 }} bg="background.secondary">
@@ -60,7 +56,7 @@ export const Portfolio = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            Our <GradientText>Portfolio</GradientText>
+            {t('portfolio.title')} <GradientText>{t('portfolio.titleHighlight')}</GradientText>
           </MotionHeading>
 
           <Text
@@ -70,8 +66,7 @@ export const Portfolio = () => {
             maxW="2xl"
             px={{ base: 2, md: 0 }}
           >
-            We've delivered exceptional solutions across various industries. 
-            Here are some of our recent projects.
+            {t('portfolio.description')}
           </Text>
 
           {isMobile ? (
@@ -109,7 +104,7 @@ export const Portfolio = () => {
                       fontSize={{ base: 'sm', md: 'md' }}
                       _hover={{ color: 'brand.400', textDecoration: 'underline' }}
                     >
-                      View Project →
+                      {t('portfolio.viewProject')}
                     </Link>
                   </VStack>
                 </AnimatedCard>

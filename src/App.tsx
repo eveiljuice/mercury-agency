@@ -5,6 +5,7 @@ import { Navigation } from './components/Navigation'
 import { Hero } from './components/Hero'
 import { Services } from './components/Services'
 import { Portfolio } from './components/Portfolio'
+import { Web3Jobs } from './components/Web3Jobs'
 import { About } from './components/About'
 import { Contact } from './components/Contact'
 
@@ -28,6 +29,7 @@ function App() {
         <Hero />
         <Services />
         <Portfolio />
+        <Web3Jobs />
         <About />
         <Contact />
       </Box>

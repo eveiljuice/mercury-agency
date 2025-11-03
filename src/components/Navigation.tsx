@@ -1,26 +1,33 @@
-import { Box, Container, HStack, Button, IconButton, Image } from '@chakra-ui/react'
+import { Box, Container, HStack, Button, IconButton, Image, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useScrollDirection } from '../hooks/useScrollDirection'
 import { useIsMobile } from '../hooks/useIsMobile'
 import { MobileMenu } from './MobileMenu'
 
 const MotionBox = motion(Box) as any
 
-const menuItems = [
-  { label: 'Services', href: '#services' },
-  { label: 'Portfolio', href: '#portfolio' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
-]
-
 export const Navigation = () => {
+  const { t, i18n } = useTranslation()
   const scrollDirection = useScrollDirection()
   const isMobile = useIsMobile()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
+  const menuItems = [
+    { label: t('nav.services'), href: '#services' },
+    { label: t('nav.portfolio'), href: '#portfolio' },
+    { label: t('nav.jobs'), href: '#jobs' },
+    { label: t('nav.about'), href: '#about' },
+    { label: t('nav.contact'), href: '#contact' },
+  ]
+
   const handleNavClick = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng)
   }
 
   return (
@@ -68,22 +75,64 @@ export const Navigation = () => {
                     variant="ghost"
                     color="text.secondary"
                     fontWeight="medium"
+                    borderRadius="full"
+                    px={6}
                     _hover={{
                       bg: 'brand.900',
                       color: 'brand.500',
+                      transform: 'translateY(-2px)',
                     }}
+                    transition="all 0.3s ease"
                     onClick={() => handleNavClick(item.href)}
                   >
                     {item.label}
                   </Button>
                 ))}
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    variant="ghost"
+                    color="text.secondary"
+                    fontWeight="medium"
+                    borderRadius="full"
+                    px={4}
+                    _hover={{
+                      bg: 'brand.900',
+                      color: 'brand.500',
+                    }}
+                  >
+                    🌐 {i18n.language.toUpperCase()}
+                  </MenuButton>
+                  <MenuList
+                    bg="background.secondary"
+                    borderColor="brand.900"
+                    minW="100px"
+                  >
+                    <MenuItem
+                      bg="background.secondary"
+                      _hover={{ bg: 'brand.900', color: 'brand.500' }}
+                      onClick={() => changeLanguage('ru')}
+                    >
+                      🇷🇺 RU
+                    </MenuItem>
+                    <MenuItem
+                      bg="background.secondary"
+                      _hover={{ bg: 'brand.900', color: 'brand.500' }}
+                      onClick={() => changeLanguage('en')}
+                    >
+                      🇬🇧 EN
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
                 <Button
                   variant="bronze"
                   size="sm"
                   ml={2}
+                  borderRadius="full"
+                  px={6}
                   onClick={() => handleNavClick('#contact')}
                 >
-                  Get Started
+                  {t('nav.getStarted')}
                 </Button>
               </HStack>
             )}

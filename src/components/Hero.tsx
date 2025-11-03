@@ -1,5 +1,6 @@
 import { Box, Container, Heading, Text, Button, Stack, Flex } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { GradientText } from './GradientText'
 
 const MotionBox = motion(Box) as any
@@ -7,6 +8,8 @@ const MotionHeading = motion(Heading) as any
 const MotionText = motion(Text) as any
 
 export const Hero = () => {
+  const { t } = useTranslation()
+  
   return (
     <Box 
       minH={{ base: '90vh', md: '100vh' }}
@@ -59,7 +62,7 @@ export const Hero = () => {
             transition={{ duration: 0.8 }}
             lineHeight={{ base: '1.2', md: '1.1' }}
           >
-            <GradientText>Mercury Agency</GradientText>
+            <GradientText>{t('hero.title')}</GradientText>
           </MotionHeading>
 
           <MotionText
@@ -72,11 +75,11 @@ export const Hero = () => {
             fontWeight="medium"
             px={{ base: 2, md: 0 }}
           >
-            We build{' '}
+            {t('hero.subtitle')}{' '}
             <Text as="span" color="brand.500" fontWeight="bold">
-              AI-powered
+              {t('hero.subtitleHighlight')}
             </Text>{' '}
-            full-stack applications that transform your business
+            {t('hero.subtitleEnd')}
           </MotionText>
 
           <MotionText
@@ -88,8 +91,7 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             px={{ base: 4, md: 0 }}
           >
-            From concept to deployment, we craft cutting-edge solutions 
-            that leverage the latest in artificial intelligence and modern web technologies
+            {t('hero.description')}
           </MotionText>
 
           <motion.div
@@ -110,18 +112,20 @@ export const Hero = () => {
                 size={{ base: 'md', md: 'lg' }}
                 w={{ base: 'full', sm: 'auto' }}
                 minH={{ base: '48px', md: '56px' }}
+                borderRadius="full"
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                Start Your Project
+                {t('hero.startProject')}
               </Button>
               <Button 
                 variant="bronzeOutline" 
                 size={{ base: 'md', md: 'lg' }}
                 w={{ base: 'full', sm: 'auto' }}
                 minH={{ base: '48px', md: '56px' }}
+                borderRadius="full"
                 onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}
               >
-                View Our Work
+                {t('hero.viewWork')}
               </Button>
             </Flex>
           </motion.div>

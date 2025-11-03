@@ -1,5 +1,6 @@
-import { Box, VStack, Text, IconButton } from '@chakra-ui/react'
+import { Box, VStack, Text, IconButton, HStack, Button } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { GradientText } from './GradientText'
 
 const MotionBox = motion(Box) as any
@@ -9,17 +10,24 @@ interface MobileMenuProps {
   onClose: () => void
 }
 
-const menuItems = [
-  { label: 'Services', href: '#services' },
-  { label: 'Portfolio', href: '#portfolio' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
-]
-
 export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
+  const { t, i18n } = useTranslation()
+
+  const menuItems = [
+    { label: t('nav.services'), href: '#services' },
+    { label: t('nav.portfolio'), href: '#portfolio' },
+    { label: t('nav.jobs'), href: '#jobs' },
+    { label: t('nav.about'), href: '#about' },
+    { label: t('nav.contact'), href: '#contact' },
+  ]
+
   const handleClick = (href: string) => {
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
     onClose()
+  }
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng)
   }
 
   return (
@@ -86,24 +94,57 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                   <Box
                     as="button"
                     w="full"
-                    textAlign="left"
+                    textAlign="center"
                     py={4}
-                    px={4}
-                    borderRadius="lg"
-                    fontSize="xl"
+                    px={6}
+                    borderRadius="full"
+                    fontSize="lg"
                     fontWeight="semibold"
                     color="text.secondary"
+                    border="1px solid"
+                    borderColor="brand.900"
                     _hover={{
                       bg: 'brand.900',
-                      transform: 'translateX(10px)',
+                      color: 'brand.500',
+                      transform: 'scale(1.05)',
                     }}
                     transition="all 0.3s ease"
                     onClick={() => handleClick(item.href)}
                   >
-                    <GradientText>{item.label}</GradientText>
+                    {item.label}
                   </Box>
                 </MotionBox>
               ))}
+              
+              {/* Language Switcher */}
+              <MotionBox
+                w="full"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: menuItems.length * 0.1 }}
+                pt={4}
+              >
+                <HStack spacing={2} w="full">
+                  <Button
+                    flex={1}
+                    variant={i18n.language === 'ru' ? 'bronze' : 'ghost'}
+                    borderRadius="full"
+                    onClick={() => changeLanguage('ru')}
+                    size="sm"
+                  >
+                    🇷🇺 RU
+                  </Button>
+                  <Button
+                    flex={1}
+                    variant={i18n.language === 'en' ? 'bronze' : 'ghost'}
+                    borderRadius="full"
+                    onClick={() => changeLanguage('en')}
+                    size="sm"
+                  >
+                    🇬🇧 EN
+                  </Button>
+                </HStack>
+              </MotionBox>
             </VStack>
 
             {/* Footer */}

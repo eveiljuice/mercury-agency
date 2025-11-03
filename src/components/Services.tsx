@@ -1,44 +1,47 @@
 import { Box, Container, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { AnimatedCard } from './AnimatedCard'
 import { GradientText } from './GradientText'
 
 const MotionHeading = motion(Heading) as any
 
-const services = [
-  {
-    icon: '🚀',
-    title: 'Full-Stack Development',
-    description: 'End-to-end application development using modern frameworks like React, Node.js, and TypeScript. We build scalable, performant solutions tailored to your needs.',
-  },
-  {
-    icon: '🤖',
-    title: 'AI Integration',
-    description: 'Seamlessly integrate AI capabilities into your applications. From GPT-powered features to custom ML models, we make AI accessible and practical.',
-  },
-  {
-    icon: '⚡',
-    title: 'Custom Solutions',
-    description: 'Bespoke software solutions designed around your unique challenges. We analyze, architect, and deliver systems that give you a competitive edge.',
-  },
-  {
-    icon: '🎨',
-    title: 'UI/UX Design',
-    description: 'Beautiful, intuitive interfaces that users love. Modern design systems with smooth animations and pixel-perfect implementation.',
-  },
-  {
-    icon: '☁️',
-    title: 'Cloud & DevOps',
-    description: 'Robust cloud infrastructure and CI/CD pipelines. We ensure your applications are reliable, scalable, and easy to maintain.',
-  },
-  {
-    icon: '📊',
-    title: 'Data Analytics',
-    description: 'Transform raw data into actionable insights. Custom dashboards, reporting systems, and data visualization solutions.',
-  },
-]
-
 export const Services = () => {
+  const { t } = useTranslation()
+
+  const services = [
+    {
+      icon: '🚀',
+      title: t('services.fullStack.title'),
+      description: t('services.fullStack.description'),
+    },
+    {
+      icon: '🤖',
+      title: t('services.ai.title'),
+      description: t('services.ai.description'),
+    },
+    {
+      icon: '⚡',
+      title: t('services.custom.title'),
+      description: t('services.custom.description'),
+    },
+    {
+      icon: '🎨',
+      title: t('services.design.title'),
+      description: t('services.design.description'),
+    },
+    {
+      icon: '☁️',
+      title: t('services.cloud.title'),
+      description: t('services.cloud.description'),
+    },
+    {
+      icon: '📊',
+      title: t('services.analytics.title'),
+      description: t('services.analytics.description'),
+    },
+  ]
+
   return (
     <Box id="services" py={{ base: 12, md: 20 }} bg="background.primary">
       <Container maxW="container.xl" px={{ base: 4, md: 6 }}>
@@ -51,7 +54,7 @@ export const Services = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            Our <GradientText>Services</GradientText>
+            {t('services.title')} <GradientText>{t('services.titleHighlight')}</GradientText>
           </MotionHeading>
 
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={{ base: 4, md: 8 }} w="full">
