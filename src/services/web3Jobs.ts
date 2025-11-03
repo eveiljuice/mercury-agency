@@ -17,8 +17,10 @@ interface Web3JobsResponse {
   2: Web3Job[] // API возвращает массив вакансий под индексом 2
 }
 
-const API_TOKEN = 'kMn9WFPS2fhG2B38F9mqMh11VgepjAg7'
-const API_URL = `https://web3.career/api/v1?token=${API_TOKEN}`
+// API URL теперь указывает на наш бэкенд прокси
+const API_BASE_URL = import.meta.env.PROD 
+  ? 'https://your-domain.com/api/web3-jobs' // Замените на ваш домен в продакшене
+  : 'http://localhost:3001/api/web3-jobs'
 
 export const fetchWeb3Jobs = async (
   options: {
@@ -30,6 +32,7 @@ export const fetchWeb3Jobs = async (
   } = {}
 ): Promise<Web3Job[]> => {
   try {
+    // Формируем параметры запроса к нашему прокси эндпоинту
     const params = new URLSearchParams()
     
     if (options.remote !== undefined) params.append('remote', String(options.remote))
@@ -39,8 +42,8 @@ export const fetchWeb3Jobs = async (
     if (options.show_description !== undefined) params.append('show_description', String(options.show_description))
 
     const url = params.toString() 
-      ? `${API_URL}&${params.toString()}` 
-      : API_URL
+      ? `${API_BASE_URL}?${params.toString()}` 
+      : API_BASE_URL
 
     const response = await fetch(url)
     

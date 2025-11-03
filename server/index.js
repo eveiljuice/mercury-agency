@@ -13,6 +13,51 @@ app.use(express.json())
 // Telegram Bot API endpoint
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
+const WEB3_CAREER_API_TOKEN = process.env.WEB3_CAREER_API_TOKEN
+
+// Web3.career API proxy endpoint
+app.get('/api/web3-jobs', async (req, res) => {
+  try {
+    const { remote, limit, country, tag, show_description } = req.query
+    
+    if (!WEB3_CAREER_API_TOKEN) {
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Web3 Career API token not configured' 
+      })
+    }
+
+    // Формируем URL для Web3.career API
+    const params = new URLSearchParams()
+    params.append('token', WEB3_CAREER_API_TOKEN)
+    
+    if (remote !== undefined) params.append('remote', String(remote))
+    if (limit) params.append('limit', String(limit))
+    if (country) params.append('country', country)
+    if (tag) params.append('tag', tag)
+    if (show_description !== undefined) params.append('show_description', String(show_description))
+
+    const apiUrl = `https://web3.career/api/v1?${params.toString()}`
+    
+    const response = await fetch(apiUrl)
+    
+    if (!response.ok) {
+      throw new Error(`Web3.career API error: ${response.statusText}`)
+    }
+
+    const data = await response.json()
+    
+    // Возвращаем данные как есть
+    res.json(data)
+  } catch (error) {
+    console.error('Web3.career API proxy error:', error)
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch jobs from Web3.career API',
+      error: error.message 
+    })
+  }
+})
 
 app.post('/api/contact', async (req, res) => {
   try {
