@@ -16,14 +16,17 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Разрешаем запросы без origin (например, из Postman) или из разрешенных origins
+    // Разрешаем запросы без origin (например, из Postman или серверные запросы) или из разрешенных origins
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true)
     } else {
+      console.warn(`CORS blocked origin: ${origin}`)
       callback(new Error('Not allowed by CORS'))
     }
   },
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }))
 app.use(express.json())
 
