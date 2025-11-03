@@ -12,11 +12,6 @@ export interface Web3Job {
   description: string
 }
 
-interface Web3JobsResponse {
-  [key: string]: any
-  2: Web3Job[] // API возвращает массив вакансий под индексом 2
-}
-
 // API URL теперь указывает на наш бэкенд прокси
 const API_BASE_URL = import.meta.env.PROD 
   ? 'https://mercury-agency-backend.herokuapp.com/api/web3-jobs' // Замените на URL вашего бэкенд сервера

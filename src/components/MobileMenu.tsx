@@ -1,7 +1,6 @@
 import { Box, VStack, Text, IconButton, HStack, Button } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import { GradientText } from './GradientText'
 
 const MotionBox = motion(Box) as any
 
