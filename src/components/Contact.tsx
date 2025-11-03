@@ -21,7 +21,7 @@ import { useState } from 'react'
 const MotionHeading = motion(Heading) as any
 
 export const Contact = () => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const toast = useToast()
   const [formData, setFormData] = useState({
     name: '',
@@ -36,8 +36,8 @@ export const Contact = () => {
     // Валидация telegram username
     if (!formData.telegram.startsWith('@')) {
       toast({
-        title: i18n.language === 'ru' ? 'Ошибка' : 'Error',
-        description: i18n.language === 'ru' 
+        title: t('i18n.language') === 'ru' ? 'Ошибка' : 'Error',
+        description: t('i18n.language') === 'ru' 
           ? 'Telegram никнейм должен начинаться с @' 
           : 'Telegram username must start with @',
         status: 'error',
@@ -62,7 +62,7 @@ export const Contact = () => {
 
       if (data.success) {
         toast({
-          title: i18n.language === 'ru' ? 'Успешно!' : 'Success!',
+          title: t('i18n.language') === 'ru' ? 'Успешно!' : 'Success!',
           description: t('contact.form.success'),
           status: 'success',
           duration: 5000,
@@ -74,7 +74,7 @@ export const Contact = () => {
       }
     } catch (error) {
       toast({
-        title: i18n.language === 'ru' ? 'Ошибка' : 'Error',
+        title: t('i18n.language') === 'ru' ? 'Ошибка' : 'Error',
         description: t('contact.form.error'),
         status: 'error',
         duration: 5000,
@@ -262,6 +262,4 @@ export const Contact = () => {
     </Box>
   )
 }
-
-
 

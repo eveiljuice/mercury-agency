@@ -48,17 +48,53 @@ export const fetchWeb3Jobs = async (
       throw new Error(`Failed to fetch jobs: ${response.statusText}`)
     }
 
-    const data: Web3JobsResponse = await response.json()
+    const data: any = await response.json()
     
-    // API возвращает массив вакансий под индексом '2'
-    const jobs = data['2']
+    // Логируем структуру ответа для отладки
+    console.log('API Response structure:', {
+      isArray: Array.isArray(data),
+      keys: Object.keys(data),
+      type: typeof data,
+      sample: data
+    })
     
-    // Проверяем что это массив
+    // Проверяем разные возможные форматы ответа
+    let jobs: Web3Job[] = []
+    
+    // Случай 1: Ответ уже массив
+    if (Array.isArray(data)) {
+      jobs = data
+    }
+    // Случай 2: Ответ - объект с массивом под индексом '2'
+    else if (data && typeof data === 'object' && Array.isArray(data['2'])) {
+      jobs = data['2']
+    }
+    // Случай 3: Ответ - объект с массивом под ключом 'jobs' или 'data'
+    else if (data && typeof data === 'object' && Array.isArray(data.jobs)) {
+      jobs = data.jobs
+    }
+    else if (data && typeof data === 'object' && Array.isArray(data.data)) {
+      jobs = data.data
+    }
+    // Случай 4: Ответ - объект с числовыми ключами, ищем первый массив
+    else if (data && typeof data === 'object') {
+      const keys = Object.keys(data)
+      for (const key of keys) {
+        if (Array.isArray(data[key])) {
+          jobs = data[key]
+          break
+        }
+      }
+    }
+    
+    // Проверяем что получили массив
     if (!Array.isArray(jobs)) {
-      console.warn('API returned non-array data:', jobs)
+      console.warn('API returned non-array data. Structure:', data)
+      console.warn('Trying to extract jobs from response...')
       return []
     }
     
+    console.log(`Successfully loaded ${jobs.length} jobs from API`)
     return jobs
   } catch (error) {
     console.error('Error fetching Web3 jobs:', error)
